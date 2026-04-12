@@ -1,11 +1,12 @@
 import { Button } from './components/ui/button'
 import './App.css'
+import Login from './pages/Login'
 
 function App() {
 
   return (
     <>
-      <Button>Let's Build LMS</Button>
+      <Login/>
     </>
   )
 }
