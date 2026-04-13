@@ -15,7 +15,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
 const Login = () => {
+  const [loginInput, setLoginInput] = useState({ email: "", password: "" })
+  const [signupInput, setSignupInput] = useState({ name: "", email: "", password: "" })
+  const changeInputHandler = (e, type) => {
+    const { name, value } = e.target
+    if (type === "signup") {
+      setSignupInput({ ...signupInput, [name]: value })
+    } else {
+      setLoginInput({ ...loginInput, [name]: value })
+    }
+  }
+  const handleRegistration = (type) => {
+    const inputData = type === "signup" ? signupInput : loginInput
+    console.log(inputData)
+  }
+
+
+
+
   return (
     <div className="flex items-center w-full justify-center">
       <Tabs defaultValue="signup" className="w-[400px]">
@@ -34,19 +54,39 @@ const Login = () => {
             <CardContent className="space-y-2">
               <div className="space-y-1">
                 <Label htmlFor="name">Name</Label>
-                <Input type="text" placeholder="Eg. sushant" required="true" />
+                <Input
+                  type="text"
+                  name="name"
+                  value={signupInput.name}
+                  onChange={(e)=>changeInputHandler(e, "signup")}
+                  placeholder="Eg. sushant"
+                  required={true}
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="name">Email</Label>
-                <Input type="email" placeholder="Eg. sushant@gmail.com" required="true" />
+                <Input
+                  type="email"
+                  name="email"
+                  value={signupInput.email}
+                  onChange={(e)=>changeInputHandler(e, "signup")}
+                  placeholder="Eg. sushant@gmail.com"
+                  required={true}
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="name">Password</Label>
-                <Input type="password" placeholder="Eg. xyz" />
+                <Input
+                  type="password"
+                  name="password"
+                  value={signupInput.password}
+                  onChange={(e)=>changeInputHandler(e, "signup")}
+                  placeholder="Eg. xyz"
+                />
               </div>
             </CardContent>
             <CardFooter>
-              <Button>Signup</Button>
+              <Button onClick={()=>{handleRegistration("signup")}}>Signup</Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -61,15 +101,29 @@ const Login = () => {
             <CardContent className="space-y-2">
               <div className="space-y-1">
                 <Label htmlFor="current">Email</Label>
-                <Input type="email" placeholder="Eg. sushant@gmail.com" required="true" />
+                <Input
+                  type="email"
+                  name="email"
+                  value={loginInput.email}
+                  onChange={(e)=>changeInputHandler(e, "login")}
+                  placeholder="Eg. sushant@gmail.com"
+                  required={true}
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="new">Password</Label>
-                <Input type="password" placeholder="Eg. xyz" required="true" />
+                <Input
+                  type="password"
+                  name="password"
+                  value={loginInput.password}
+                  onChange={(e)=>changeInputHandler(e, "login")}
+                  placeholder="Eg. xyz"
+                  required={true}
+                />
               </div>
             </CardContent>
             <CardFooter>
-              <Button>Login</Button >
+              <Button onClick={()=>{handleRegistration("login")}}>Login</Button >
             </CardFooter>
           </Card>
         </TabsContent>
