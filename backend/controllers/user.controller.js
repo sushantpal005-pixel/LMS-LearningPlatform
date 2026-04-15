@@ -1,7 +1,7 @@
 import { User } from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 import { generateToken } from "../utils/generateToken.js"
-export const register = async (req, res) => {
+export const register = async (req, res) => {       // register controller
     try {
         const {name, email, password} = req.body
         if(!name || !email || !password){
@@ -35,7 +35,7 @@ export const register = async (req, res) => {
         })
     }   
 }
-export const login = async (req, res) => {
+export const login = async (req, res) => {           // login controller 
     try {
         const {email, password} = req.body
         if(!email || !password){
