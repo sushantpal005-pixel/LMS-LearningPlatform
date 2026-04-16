@@ -5,32 +5,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const Login = () => {
-  const [loginInput, setLoginInput] = useState({ email: "", password: "" })
-  const [signupInput, setSignupInput] = useState({ name: "", email: "", password: "" })
+  const [loginInput, setLoginInput] = useState({ email: "", password: "" });
+  const [signupInput, setSignupInput] = useState({ name: "", email: "", password: "" });
   const changeInputHandler = (e, type) => {
     const { name, value } = e.target
     if (type === "signup") {
-      setSignupInput({ ...signupInput, [name]: value })
+      setSignupInput({ ...signupInput, [name]: value });
     } else {
-      setLoginInput({ ...loginInput, [name]: value })
+      setLoginInput({ ...loginInput, [name]: value });
     }
   }
   const handleRegistration = (type) => {
-    const inputData = type === "signup" ? signupInput : loginInput
-    console.log(inputData)
+    const inputData = type === "signup" ? signupInput : loginInput;
+    console.log(inputData);
   }
 
 
