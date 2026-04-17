@@ -1,9 +1,9 @@
-import { User } from "../models/user.model.js"
-import bcrypt from "bcryptjs"
-import { generateToken } from "../utils/generateToken.js"
+import { User } from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import { generateToken } from "../utils/generateToken.js";
 export const register = async (req, res) => {       // register controller
     try {
-        const {name, email, password} = req.body
+        const {name, email, password} = req.body;
         if(!name || !email || !password){
             return res.status(400).json({
                 success: false,
