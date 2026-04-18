@@ -10,14 +10,14 @@ export const register = async (req, res) => {       // register controller
                 message: "All fields are required"
             })
         }
-        const user = await User.findOne({email})
+        const user = await User.findOne({email});
         if(user){
             return res.status(400).json({
                 success: false,
                 message: "User already exist with this email."
             })
         } 
-        const hashedPassword = await bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             name,
             email,
@@ -28,7 +28,7 @@ export const register = async (req, res) => {       // register controller
             message: "Accout created successfully."
         })
     } catch (error) {
-        console.log(error )
+        console.log(error );
         return res.status(500).json({
             success: false,
             message: "Failed to register"
@@ -37,14 +37,14 @@ export const register = async (req, res) => {       // register controller
 }
 export const login = async (req, res) => {           // login controller 
     try {
-        const {email, password} = req.body
+        const {email, password} = req.body;
         if(!email || !password){
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
             })
         }
-        const user = await User.findOne({email})
+        const user = await User.findOne({email});
         if(!user){
             return res.status(400).json({
                 success: false,
