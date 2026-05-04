@@ -16,10 +16,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useLoginUserMutation, useRegisterUserMutation } from "@/features/api/authApi";
 
 const Login = () => {
-  const [loginInput, setLoginInput] = useState({ email: "", password: "" });
   const [signupInput, setSignupInput] = useState({ name: "", email: "", password: "" });
+  const [loginInput, setLoginInput] = useState({ email: "", password: "" });
+  const [ registerUser, {data: registerData, error: registerError, isLoading: registerIsLoading, isSuccess: registerIsSuccess} ] = useRegisterUserMutation()
+  const [ loginUser, {data} ] = useLoginUserMutation()
   const changeInputHandler = (e, type) => {
     const { name, value } = e.target
     if (type === "signup") {
