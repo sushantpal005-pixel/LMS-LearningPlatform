@@ -17,12 +17,13 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useLoginUserMutation, useRegisterUserMutation } from "@/features/api/authApi";
+import { Loader } from "@hugeicons/core-free-icons";
 
 const Login = () => {
   const [signupInput, setSignupInput] = useState({ name: "", email: "", password: "" });
   const [loginInput, setLoginInput] = useState({ email: "", password: "" });
   const [ registerUser, {data: registerData, error: registerError, isLoading: registerIsLoading, isSuccess: registerIsSuccess} ] = useRegisterUserMutation()
-  const [ loginUser, {data} ] = useLoginUserMutation()
+  const [ loginUser, {data: loginData, error: loginError, isLoading: loginIsLoading, isSuccess: loginIsSuccess}, ] = useLoginUserMutation()
   const changeInputHandler = (e, type) => {
     const { name, value } = e.target
     if (type === "signup") {
@@ -31,9 +32,11 @@ const Login = () => {
       setLoginInput({ ...loginInput, [name]: value });
     }
   }
-  const handleRegistration = (type) => {
+  const handleRegistration = async (type) => {
     const inputData = type === "signup" ? signupInput : loginInput;
-    console.log(inputData);
+    const action = type === "signup" ? registerUser : loginUser
+    await action(inputData);
+
   }
 
 
@@ -89,7 +92,15 @@ const Login = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={()=>{handleRegistration("signup")}}>Signup</Button>
+              <Button disabled={registerIsLoading} onClick={()=>{handleRegistration("signup")}}>
+                {
+                  registerIsLoading ? (
+                    <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin"/> Please wait
+                    </>
+                  ) : "Signup"
+                }
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -126,7 +137,16 @@ const Login = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={()=>{handleRegistration("login")}}>Login</Button >
+              <Button disabled={loginIsLoading} onClick={()=>{handleRegistration("login")}}>
+                {
+                  loginIsLoading ? (
+                    <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin"/> Please wait
+                    
+                    </>
+                  ) : "Login"
+                }
+              </Button >
             </CardFooter>
           </Card>
         </TabsContent>
