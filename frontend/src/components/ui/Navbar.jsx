@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Link } from 'react-router-dom'
 
 
 
@@ -54,8 +55,8 @@ const Navbar = () => {
                                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem>My Learning</DropdownMenuItem>
-                                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+                                        <DropdownMenuItem><Link to="my-learning">My Learning</Link></DropdownMenuItem>
+                                        <DropdownMenuItem><Link to="profile">Edit Profile</Link></DropdownMenuItem>
                                         <DropdownMenuItem>Log out</DropdownMenuItem>
                                     </DropdownMenuGroup>
                                     <DropdownMenuSeparator />
