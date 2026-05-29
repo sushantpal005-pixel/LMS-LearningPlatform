@@ -3,20 +3,20 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 export const register = async (req, res) => {       // register controller
     try {
-        const {name, email, password} = req.body;
-        if(!name || !email || !password){
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
             })
         }
-        const user = await User.findOne({email});
-        if(user){
+        const user = await User.findOne({ email });
+        if (user) {
             return res.status(400).json({
                 success: false,
                 message: "User already exist with this email."
             })
-        } 
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             name,
@@ -28,31 +28,31 @@ export const register = async (req, res) => {       // register controller
             message: "Accout created successfully."
         })
     } catch (error) {
-        console.log(error );
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "Failed to register"
         })
-    }   
+    }
 }
 export const login = async (req, res) => {           // login controller 
     try {
-        const {email, password} = req.body;
-        if(!email || !password){
+        const { email, password } = req.body;
+        if (!email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
             })
         }
-        const user = await User.findOne({email});
-        if(!user){
+        const user = await User.findOne({ email });
+        if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "Incorrect email or password"
             })
         }
         const isPassword = await bcrypt.compare(password, user.password)
-        if(!isPassword){
+        if (!isPassword) {
             return res.status(400).json({
                 success: false,
                 message: "Incorrect email or password"
@@ -60,10 +60,48 @@ export const login = async (req, res) => {           // login controller
         }
         generateToken(res, user, `Welcome back ${user.name}`)
     } catch (error) {
-        console.log(error )
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: "Failed to login"
+        })
+    }
+}
+
+export const logout = async (req, res) => {
+    try {
+        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+            message: "Logged out successfully.",
+            success: true
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Failed to logout"
+        })
+    }
+}
+
+export const getUserProfile = async (req, res) => {
+    try {
+        const userId = req.id;
+        const user = await User.findById(userId).select("-password")
+        if(!user){
+            return res.status(404).json({
+                message: "Profile not found",
+                success: false
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Failed to load user"
         })
     }
 }
