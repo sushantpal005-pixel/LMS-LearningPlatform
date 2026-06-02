@@ -32,6 +32,10 @@ const Profile = () => {
     };
 
     useEffect(() => {
+        refetch()
+    }, [])
+
+    useEffect(() => {
         if (isSuccess) {
             refetch();
             toast.success(data.message || "Profile updated")
@@ -44,7 +48,7 @@ const Profile = () => {
 
     if (isLoading) return <h1>Profile Loading...</h1>
 
-    const { user } = data
+    const user  = data && data.user
 
     return (
         <div className='max-w-4xl mx-auto px-4 my-24'>
@@ -52,7 +56,7 @@ const Profile = () => {
             <div className='flex flex-col md:flex-row items-center md:items-start gap-8 my-5 ' >
                 <div className='flex flex-col items-center'>
                     <Avatar className="h-24 w-24 md:h-32 md:w-32 mb-4 ">
-                        <AvatarImage src={user.photoUrl || "https://github.com/shadcn.png"} />
+                        <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </div>
