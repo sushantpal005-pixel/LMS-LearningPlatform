@@ -1,7 +1,7 @@
 import { Button } from './components/ui/button'
 import './App.css'
 import Login from './pages/Login'
-import Navbar from './components/ui/Navbar'
+import Navbar from './components/Navbar'
 import HeroSection from './pages/student/HeroSection'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import MainLayout from './layout/MainLayout'
@@ -12,6 +12,7 @@ import Sidebar from './pages/admin/SideBar'
 import Dashboard from './pages/admin/Dashboard'
 import CourseTable from './pages/admin/course/CourseTable'
 import AddCourse from './pages/admin/course/AddCourse'
+import EditCourse from './pages/admin/course/EditCourse'
 
 
 
@@ -59,6 +60,10 @@ const appRouter = createBrowserRouter([
           {
             path:"course/create",
             element:<AddCourse/>
+          },
+          {
+            path:"course/:courseId",
+            element:<EditCourse/>
           }
         ]
       }

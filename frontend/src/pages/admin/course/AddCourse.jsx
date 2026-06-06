@@ -13,9 +13,6 @@ const AddCourse = () => {
     const [category, setCategory] = useState("");
     const [createCourse, { data, isLoading, error, isSuccess }] = useCreateCourseMutation();
 
-
-
-
     const navigate = useNavigate();
     const getSelectedCategory = (value) => {
         setCategory(value)
@@ -29,6 +26,7 @@ const AddCourse = () => {
     useEffect (()=>{
         if(isSuccess){
             toast.success(data?.message || "Course created.")
+            navigate("/admin/course");
         }
     }, [isSuccess, error])
     return (
