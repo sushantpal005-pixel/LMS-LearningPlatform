@@ -4,13 +4,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useEditCourseMutation } from '@/features/api/courseApi';
+import { useEditCourseMutation, useGetCourseByIdQuery } from '@/features/api/courseApi';
 import { Loader2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const CourseTab = () => {
+    const params = useParams();
+    const courseId = params.courseId
+
     const [input, setInput] = useState({
         courseTitle: "",
         subTitle: "",
@@ -20,27 +23,41 @@ const CourseTab = () => {
         coursePrice: "",
         courseThumbnail: ""
     });
+    const { data: courseByIdData, isLoading: courseByIdLoading } = useGetCourseByIdQuery(courseId, {refetchOnMountOrArgChange:true});
+
+    useEffect(() => {
+        if (courseByIdData?.course) {
+            const course = courseByIdData?.course
+            setInput({
+                courseTitle: course.courseTitle,
+                subTitle: course.subTitle,
+                description: course.description,
+                category: course.category,
+                courseLevel: course.courseLevel,
+                coursePrice: course.coursePrice,
+                courseThumbnail: "",
+            })
+        }
+    }, [courseByIdData])
     const [previewThumbnail, setPreviewThumbnail] = useState("")
     const navigate = useNavigate()
-    const params = useParams();
-    const courseId = params.courseId
 
-    const [editCourse, {data, isLoading, isSuccess, error}] = useEditCourseMutation()
+    const [editCourse, { data, isLoading, isSuccess, error }] = useEditCourseMutation()
     const changeEventHandler = (e) => {
         const { name, value } = e.target;
         setInput({ ...input, [name]: value })
     };
 
     const selectCategory = (value) => {
-        setInput({...input, category:value})
+        setInput({ ...input, category: value })
     }
     const selectCourseLevel = (value) => {
-        setInput({...input, courseLevel:value})
+        setInput({ ...input, courseLevel: value })
     }
     const selectThumbnail = (e) => {
         const file = e.target.files?.[0]
-        if(file){
-            setInput({...input, courseThumbnail:file})
+        if (file) {
+            setInput({ ...input, courseThumbnail: file })
             const fileReader = new FileReader();
             fileReader.onloadend = () => setPreviewThumbnail(fileReader.result)
             fileReader.readAsDataURL(file)
@@ -56,19 +73,21 @@ const CourseTab = () => {
         formData.append("courseLevel", input.courseLevel)
         formData.append("coursePrice", input.coursePrice)
         formData.append("courseThumbnail", input.courseThumbnail)
-        await editCourse({formData, courseId});
+        await editCourse({ formData, courseId });
     }
-    
-    useEffect(()=>{
-        if(isSuccess){
+
+    useEffect(() => {
+        if (isSuccess) {
             console.log("hogya bc");
-            
+
             toast.success(data.message || "Course update.")
         }
-        if(error){
+        if (error) {
             toast.error(error.data.message || "Failed to update course")
         }
     }, [isSuccess, error])
+
+    if(courseByIdLoading) return <h1>Loading...</h1> 
     const isPublished = true;
     return (
         <Card>
@@ -115,7 +134,7 @@ const CourseTab = () => {
                     <div className='flex items-center gap-5'>
                         <div>
                             <Label>Category</Label>
-                            <Select onValueChange={selectCategory}>
+                            <Select value={input.category} onValueChange={selectCategory}>
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
@@ -138,7 +157,7 @@ const CourseTab = () => {
                         </div>
                         <div>
                             <Label>Course Level</Label>
-                            <Select onValueChange={selectCourseLevel} >
+                            <Select value={input.courseLevel} onValueChange={selectCourseLevel} >
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Select a course level" />
                                 </SelectTrigger>
@@ -184,8 +203,8 @@ const CourseTab = () => {
                             {
                                 isLoading ? (
                                     <>
-                                    <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
-                                    Please wait
+                                        <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                        Please wait
                                     </>
                                 ) : "Save"
                             }
