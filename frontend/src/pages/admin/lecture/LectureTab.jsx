@@ -3,16 +3,43 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
+import axios from 'axios'
 import React, { useState } from 'react'
 
+const MEDIA_API = "http://localhost:8080/api/v1/media"
 const LectureTab = () => {
     const [title, setTitle] = useState("")
-    const [uploadVideoInfo, setUploadInfo] = useState(null);
+    const [uploadVideoInfo, setUploadVideoInfo] = useState(null);
     const [isFree, setIsFree] = useState(false);
     const [mediaProgress, setMediaProgress] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0)
     const [btnDisable, setBtnDisable] = useState(true);
+
     
+    const fileChangeHandler = async (e) => {
+        const file = e.target.files[0];
+        if(file){
+            const formData = new FormData();
+            formData.append('file', file)
+            setMediaProgress(true)
+            try {
+                const res = await axios.post(`${MEDIA_API}/upload-video`, formData, {
+                    onUploadProgress: ({loaded, total}) => {
+                        setUploadProgress(Math.round((loaded * 100)/total));
+                    }
+                })
+                if(res.data.success === true){
+                    console.log(res);
+                    
+                    setUploadVideoInfo({videoUrl: res.data.data.url, publicId: res.data.data.public_id})
+                    setBtnDisable(false)
+                    toast.success(res.data.message)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
 
     return (
         <Card>

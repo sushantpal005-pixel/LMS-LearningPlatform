@@ -176,3 +176,4 @@ export const editLecture = async(req, res) => {
         })
     }
 }
+
