@@ -4,8 +4,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { Switch } from '@/components/ui/switch'
-import { useEditLectureMutation } from '@/features/api/courseApi'
+import { useEditLectureMutation, useRemoveLectureMutation } from '@/features/api/courseApi'
 import axios from 'axios'
+import { Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -22,7 +23,7 @@ const LectureTab = () => {
     const { courseId, lectureId } = params;
 
     const [editLecture, { data, isLoading, error, isSuccess }] = useEditLectureMutation();
-
+    const [removeLecture, {data: removeData, isLoading: removeLoading, isSuccess: removeSuccess}] = useRemoveLectureMutation();
     const fileChangeHandler = async (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -37,7 +38,6 @@ const LectureTab = () => {
                 })
                 if (res.data.success === true) {
                     console.log(res);
-
                     setUploadVideoInfo({ videoUrl: res.data.data.url, publicId: res.data.data.public_id })
                     setBtnDisable(false)
                     toast.success(res.data.message)
@@ -56,6 +56,10 @@ const LectureTab = () => {
 
     }
 
+    const removeLectureHandler = async () => {
+        await removeLecture(lectureId)
+    }
+
     useEffect(() => {
         if (isSuccess) {
             toast.success(data.message)
@@ -65,6 +69,11 @@ const LectureTab = () => {
         }
     }, [isSuccess, error])
 
+    useEffect(()=>{
+        if(removeSuccess){
+            toast.success(removeData.message)
+        }
+    } ,[removeSuccess])
     return (
         <Card>
             <CardHeader className=''>
@@ -73,7 +82,14 @@ const LectureTab = () => {
                     <CardDescription>Make changes and click save when done.</CardDescription>
                 </div>
                 <div className='flex items-center gap-2'>
-                    <Button variant='destructive'>Remove Lecture</Button>
+                    <Button disabled={removeLoading} variant='destructive' onClick={removeLectureHandler}>
+                        {
+                            removeLoading ? <>
+                            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                            Please wait
+                            </> : "Remove Lecture"
+                        }
+                    </Button>
                 </div>
             </CardHeader>
             <CardContent>
@@ -98,7 +114,14 @@ const LectureTab = () => {
                     )
                 }
                 <div className='mt-4'>
-                    <Button onClick={editLectureHandler}>Update Lecture</Button>
+                    <Button disabled={isLoading} onClick={editLectureHandler}>
+                        {
+                            isLoading ? <>
+                            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                            Please wait
+                            </> : "Update Lecture"                  
+                        }
+                    </Button>
                 </div>
 
             </CardContent>
