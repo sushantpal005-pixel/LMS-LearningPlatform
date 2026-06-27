@@ -1,11 +1,14 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react'
 import Course from './Course';
+import { useGetPublishedCourseQuery } from '@/features/api/courseApi';
 
-const courses = [1,2,3,4,5,6]
 
 const Courses = () => {
-    const isLoading = false;
+    const {data, isLoading, isError} = useGetPublishedCourseQuery();
+    console.log(data);
+    if(isError) return <h1>Some error occured while fetching courses.</h1>
+
     return (
         <div className='bg-gray-50 '>
             <div className='max-w-7xl mx-auto p-6'>
@@ -13,7 +16,7 @@ const Courses = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
                     {
                         isLoading ? Array.from({ length: 8 }).map((_, index) => (
-                            <CourseSkeleton key={index} />)) : (courses.map((courses, index)=> <Course key={index}/>))
+                            <CourseSkeleton key={index} />)) : (data?.courses && data.courses.map((course, index)=> <Course key={index} course={course}/>))
                     }
                 </div>
 
