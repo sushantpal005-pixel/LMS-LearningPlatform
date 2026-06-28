@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-const CoursePurchaseSchema = new mongoose.Schema9({
+const CoursePurchaseSchema = new mongoose.Schema({
     courseId: {
-        type: mongoose.Schmea.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
         required: true
     },
     userId: {
-        type: mongoose.Schmea.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
