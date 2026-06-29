@@ -1,0 +1,12 @@
+import express from "express"
+import isAuthenticated from "../middlewares/isAuthenticated.js"
+import { getCourseprogress, markAsCompleted, updateLectureProgress } from "../controllers/courseProgress.controller.js"
+
+const router = express.Router()
+
+router.route("/:courseId").get(isAuthenticated, getCourseprogress)
+router.route("/:courseId/lectureId/view").post(isAuthenticated, updateLectureProgress)
+router.route("courseId/complete").post(isAuthenticated, markAsCompleted)
+router.route("/:courseId/incomplete").post(isAuthenticated, markAsCompleted)
+
+export default router;
