@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Lecture } from "./lecture.model";
+import { Lecture } from "./lecture.model.js";
 
 const lectureProgressSchema = new mongoose.Schema({
     lectureId : {type: String},
