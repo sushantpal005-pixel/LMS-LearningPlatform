@@ -17,6 +17,7 @@ import CreateLecture from './pages/admin/lecture/CreateLecture'
 import EditLecture from './pages/admin/lecture/EditLecture'
 import CourseDetail from './pages/student/CourseDetail'
 import CourseProgress from './pages/student/CourseProgress'
+import SearchPage from './pages/student/SearchPage'
 
 
 
@@ -47,6 +48,10 @@ const appRouter = createBrowserRouter([
         element:<Profile/>
       },
       {
+        path: "course/search",
+        element: <SearchPage />
+      },
+      {
         path: "course-detail/:courseId",
         element:<CourseDetail/>
       },
@@ -54,6 +59,7 @@ const appRouter = createBrowserRouter([
         path: "course-progress/:courseId",
         element: <CourseProgress/>
       },
+
       
 
       //admin routes start here
