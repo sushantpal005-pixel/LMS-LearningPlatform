@@ -91,7 +91,7 @@ const Profile = () => {
                             <div className='grid gap-4 py-4'>
                                 <div className='grid grid-cols-4 items-center gap-4 '>
                                     <Label>Name</Label>
-                                    <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" className="col-span-3" />
+                                    <Input type="text" value={name} onChange={(e) => setName(e.target?.value)} placeholder="Name" className="col-span-3" />
                                 </div>
                                 <div className='grid grid-cols-4 items-center gap-4 '>
                                     <Label>Profile Photo</Label>

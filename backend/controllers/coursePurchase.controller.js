@@ -177,6 +177,7 @@ export const getCourseDetailWithPurchaseStatus = async (req, res) => {
 export const getAllPurchasedCourse = async (_, res) => {
   try {
     const purchasedCourse = await CoursePurchase.find({ status: "completed" }).populate("courseId")
+    console.log(purchasedCourse);
     if (!purchasedCourse) {
       return res.status(404).json({
         purchasedCourse: []
