@@ -20,7 +20,7 @@ const CourseDetail = () => {
 
     const { course, purchased } = data;
     const handleContinueCourse = () => {
-        if(purchased){
+        if (purchased) {
             navigate(`/course-progress/${courseId}`)
         }
     }
@@ -29,7 +29,7 @@ const CourseDetail = () => {
     console.log(course.lectures[0].videoUrl)
     const purchasedCourse = false;
     return (
-        <div className='mt-20 space-y-5'>
+        <div className=' space-y-5'>
             <div className='bg-[#2D2F31] text-white'>
                 <div className='max-w-7xl mx-auto py-8 px-4 md:px-8 flex flex-col gap-2'>
                     <h1 className='fontbold text-2xl md:text-3xl'>{course?.courseTitle}</h1>

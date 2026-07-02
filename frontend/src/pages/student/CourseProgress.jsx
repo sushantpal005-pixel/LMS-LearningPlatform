@@ -73,7 +73,7 @@ console.log("completed:", completed);
 console.log(data.data);
 
   return (
-    <div className='max-w-7xl mx-auto p-4 mt-20'>
+    <div className='max-w-7xl mx-auto p-4'>
       {/* Display course name */}
       <div className="flex justify-between mb-4">
         <h1 className='text-2xl font-bold'>{courseTitle}</h1>
@@ -124,7 +124,7 @@ console.log(data.data);
                 <Card
                   key={lecture._id}
                   className={`mb-3 hover:cursor-pointer transition transform ${lecture._id === currentLecture?._id
-                    ? "bg-gray-200 dark:dark:bg-gray-800"
+                    ? "bg-gray-200 dark:dark:bg-black"
                     : ""
                     } `}
                   onClick={() => handleSelectLecture(lecture)} >
